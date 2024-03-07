@@ -1,3 +1,5 @@
+"use client"
+
 import { useFormState } from "react-dom"
 
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
@@ -5,6 +7,8 @@ import Input from "@modules/common/components/input"
 import { logCustomerIn } from "@modules/account/actions"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
+
+import { LoginButton } from "@telegram-auth/react"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -50,6 +54,22 @@ const Login = ({ setCurrentView }: Props) => {
         </button>
         .
       </span>
+      <LoginButton
+        botUsername="snsakscc_bot"
+        buttonSize="large"
+        cornerRadius={3}
+        onAuthCallback={(data) => {
+          fetch("http://localhost:9000/store/auth", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((res) => res.json().then(() => console.log("ok")))
+            .catch((err) => console.log(err))
+        }}
+      />
     </div>
   )
 }
