@@ -8,6 +8,7 @@ import { logCustomerIn } from "@modules/account/actions"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 
+import { useRouter } from "next/navigation"
 import { LoginButton } from "@telegram-auth/react"
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 
 const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useFormState(logCustomerIn, null)
+  const router = useRouter()
 
   return (
     <div className="max-w-sm w-full flex flex-col items-center">
@@ -70,6 +72,7 @@ const Login = ({ setCurrentView }: Props) => {
               res.json().then((data) => {
                 const token = data.token
                 document.cookie = `_medusa_jwt=${token}; max-age=2592000; SameSite=Strict; path=/`
+                router.refresh()
               })
             )
             .catch((err) => console.log(err))
