@@ -66,7 +66,12 @@ const Login = ({ setCurrentView }: Props) => {
             },
             body: JSON.stringify(data),
           })
-            .then((res) => res.json().then(() => console.log("ok")))
+            .then((res) =>
+              res.json().then((data) => {
+                const token = data.token
+                document.cookie = `_medusa_jwt=${token}; max-age=2592000; SameSite=Strict; path=/`
+              })
+            )
             .catch((err) => console.log(err))
         }}
       />
