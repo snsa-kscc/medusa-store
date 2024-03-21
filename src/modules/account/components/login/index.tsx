@@ -72,7 +72,6 @@ const Login = ({ setCurrentView }: Props) => {
           })
             .then((res) => {
               if (!res.ok) {
-                setErrorMsg("Failed to authenticate with Telegram.")
                 throw new Error("Failed to authenticate with Telegram.")
               }
               return res.json()
@@ -83,7 +82,7 @@ const Login = ({ setCurrentView }: Props) => {
               router.refresh()
             })
             .catch((err) => {
-              setErrorMsg("Failed to fetch remote resource.")
+              setErrorMsg("Failed to authenticate with Telegram.")
               console.log(err)
             })
         }}
