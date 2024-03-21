@@ -63,7 +63,7 @@ const Login = ({ setCurrentView }: Props) => {
         buttonSize="large"
         cornerRadius={3}
         onAuthCallback={(data) => {
-          fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/st11ore/auth`, {
+          fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
