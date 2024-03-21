@@ -1,6 +1,7 @@
 "use client"
 
 import { useFormState } from "react-dom"
+import { useState } from "react"
 
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import Input from "@modules/common/components/input"
@@ -18,6 +19,7 @@ type Props = {
 const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useFormState(logCustomerIn, null)
   const router = useRouter()
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   return (
     <div className="max-w-sm w-full flex flex-col items-center">
@@ -57,27 +59,33 @@ const Login = ({ setCurrentView }: Props) => {
         .
       </span>
       <LoginButton
-        botUsername="snsakscc_bot"
+        botUsername={process.env.NEXT_PUBLIC_BOT_USERNAME!}
         buttonSize="large"
         cornerRadius={3}
         onAuthCallback={(data) => {
-          fetch("http://localhost:9000/store/auth", {
+          fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
           })
-            .then((res) =>
-              res.json().then((data) => {
-                const token = data.token
-                document.cookie = `_medusa_jwt=${token}; max-age=2592000; SameSite=Strict; path=/`
-                router.refresh()
-              })
-            )
+            .then((res) => {
+              if (!res.ok) {
+                setErrorMsg("Failed to authenticate with Telegram.")
+                throw new Error("Failed to authenticate with Telegram.")
+              }
+              return res.json()
+            })
+            .then((data) => {
+              const token = data.token
+              document.cookie = `_medusa_jwt=${token}; max-age=2592000; SameSite=Strict; path=/`
+              router.refresh()
+            })
             .catch((err) => console.log(err))
         }}
       />
+      <p className="text-red-500">{errorMsg}</p>
     </div>
   )
 }
