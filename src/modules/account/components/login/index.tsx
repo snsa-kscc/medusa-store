@@ -63,7 +63,7 @@ const Login = ({ setCurrentView }: Props) => {
         buttonSize="large"
         cornerRadius={3}
         onAuthCallback={(data) => {
-          fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/auth`, {
+          fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/st11ore/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -82,7 +82,10 @@ const Login = ({ setCurrentView }: Props) => {
               document.cookie = `_medusa_jwt=${token}; max-age=2592000; SameSite=Strict; path=/`
               router.refresh()
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+              setErrorMsg("Failed to fetch remote resource.")
+              console.log(err)
+            })
         }}
       />
       <p className="text-red-500">{errorMsg}</p>
