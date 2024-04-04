@@ -35,8 +35,8 @@ export default async function Profile() {
       <div className="flex flex-col gap-y-8 w-full">
         <ProfileName customer={customer} />
         <Divider />
-        <ProfileEmail customer={customer} />
-        <Divider />
+        {/* <ProfileEmail customer={customer} />
+        <Divider /> */}
         <ProfilePhone customer={customer} />
         <Divider />
         <ProfilePassword customer={customer} />
